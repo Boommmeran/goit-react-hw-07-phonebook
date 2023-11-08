@@ -15,10 +15,7 @@ const schema = yup.object().shape({
   name: yup.string().required('It is required field'),
   phone: yup
     .string()
-    .matches(
-      /(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})/g,
-      'Phone number must contain only numbers'
-    )
+    .matches(/^[0-9+ -]+$/, 'Invalid character')
     .required('It is required field'),
 });
 
@@ -33,6 +30,10 @@ export const ContactsForm = () => {
       return Notiflix.Notify.failure(
         'This contact is already in your phone book'
       );
+    }
+
+    if (name.trim().length === 0) {
+      return Notiflix.Notify.failure('Please insert contact name');
     }
 
     dispatch(contactsOperations.addContact({ name, phone }));
