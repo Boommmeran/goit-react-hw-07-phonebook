@@ -4,14 +4,17 @@ import { Text, DeleteBnt, DeleteIcon } from './Contact.styled';
 
 export const Contact = ({ contact }) => {
   const dispatch = useDispatch();
-  const handleDelete = () =>
-    dispatch(contactsOperations.deleteContact(contact.id));
+
+  const { deleteContact } = contactsOperations;
+  const { name, phone, id } = contact;
+
+  const handleDelete = () => dispatch(deleteContact(id));
 
   return (
     <>
       <div>
-        <Text>{contact.name}</Text>
-        <Text>{contact.phone}</Text>
+        <Text>{name}</Text>
+        <Text>{phone}</Text>
       </div>
       <DeleteBnt type="button" onClick={handleDelete}>
         <DeleteIcon />

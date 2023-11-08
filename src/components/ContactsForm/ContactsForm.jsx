@@ -1,8 +1,8 @@
-import { Formik, ErrorMessage } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
+import { Formik, ErrorMessage } from 'formik';
 import Notiflix from 'notiflix';
-import { contactsOperations, contactsSelectors } from 'redux/contacts';
 import * as yup from 'yup';
+import { contactsOperations, contactsSelectors } from 'redux/contacts';
 import {
   StyledForm,
   Label,
@@ -30,11 +30,11 @@ export const ContactsForm = () => {
       return Notiflix.Notify.failure(
         'This contact is already in your phone book'
       );
-    }
+    };
 
     if (name.trim().length === 0) {
       return Notiflix.Notify.failure('Please insert contact name');
-    }
+    };
 
     dispatch(contactsOperations.addContact({ name, phone }));
     resetForm();

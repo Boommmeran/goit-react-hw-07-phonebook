@@ -1,23 +1,27 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { contactsSelectors } from 'redux/contacts';
+import { contactsOperations } from 'redux/contacts';
 import { ContactsForm } from 'components/ContactsForm';
 import { ContactsList } from 'components/ContactsList';
 import { Filter } from 'components/Filter';
 import { Loader } from 'components/Loader';
-import { Error } from 'components/Error'
-import { contactsSelectors } from 'redux/contacts';
-import { contactsOperations } from 'redux/contacts';
-import { Container, MainTitle, Title } from './App.syled';
+import { Error } from 'components/Error';
+import { Container, MainTitle, Title } from './App.styled';
 
 export function App() {
   const dispatch = useDispatch();
-  const contacts = useSelector(contactsSelectors.selectContacts);
-  const isLoading = useSelector(contactsSelectors.selectIsLoading);
-  const error = useSelector(contactsSelectors.selectError);
+
+  const { selectContacts, selectIsLoading, selectError } = contactsSelectors;
+  const { fetchContacts } = contactsOperations;
+
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   useEffect(() => {
-    dispatch(contactsOperations.fetchContacts());
-  }, [dispatch]);
+    dispatch(fetchContacts());
+  }, [dispatch, fetchContacts]);
 
   return (
     <Container>
@@ -26,7 +30,9 @@ export function App() {
       <Title>Contacts</Title>
       <Filter />
       {contacts.length !== 0 && <ContactsList />}
-      {error && <Error text={'Something went wrong, please reload this page'} />}
+      {error && (
+        <Error text={'Something went wrong, please reload this page'} />
+      )}
       {isLoading && <Loader />}
     </Container>
   );
